@@ -10,9 +10,19 @@ var addon = app.addon()
 if (process.env.DEV_KEY) {
   addon.key(process.env.DEV_KEY);
 }
- 
+
 addon.webhook('room_message', /^\/hello$/, function *() {
-  yield this.roomClient.sendNotification('Hi, ' + this.sender.name + '!');
+	yield this.roomClient.sendNotification('Sup, ' + this.sender.name + '!');
 });
- 
+
+addon.webhook('room_message', /^\/pick\s(@\w+\s)+/, function *() {
+	var people = this.content.split('/pick')[1];
+	people = people.split(' @');
+	people.shift();
+	yield this.roomClient.sendNotification('Picking from: ' + people.join(', '));
+
+	var selection = ~~(people.length * Math.random());
+	yield this.roomClient.sendNotification('Result: @' + people[selection]);
+});
+
 app.listen();
