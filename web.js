@@ -19,10 +19,10 @@ addon.webhook('room_message', /^\/pick\s(@\w+\s)+/, function *() {
 	var people = this.content.split('/pick')[1];
 	people = people.split(' @');
 	people.shift();
-	yield this.roomClient.sendNotification('Picking from: ' + people.join(', '));
+//	yield this.roomClient.sendNotification('Picking from: ' + people.join(', '));
 
 	var selection = ~~(people.length * Math.random());
-	yield this.roomClient.sendNotification('Result: @' + people[selection]);
+	yield this.roomClient.sendNotification('I dunno, I guess I\'ll pick @' + people[selection], {notify: true});
 });
 
 app.listen();
